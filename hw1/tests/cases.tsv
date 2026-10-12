@@ -1,0 +1,208 @@
+# HW1 test cases: kind<TAB>input<TAB>expected[<TAB>comment]; see lexgen/cases.py.
+#   match: the whole input as one token -> TOKEN | TRAP (dead state) | REJECT (unfinished prefix of a token)
+#   lex:   the input split into tokens  -> TOKEN TOKEN ... | ERROR offset of the first bad character
+
+# --- Empty string and whitespace
+match		REJECT	empty string is not a token
+match	 	WS
+match	\t	WS
+match	\r\n	WS	CRLF
+match	 \t\r\n \n	WS
+match	   \t  	WS	only spaces and tabs
+match	\r\n\r\n	WS	only CRLF
+
+# --- Numbers
+match	0	INT
+match	7	INT
+match	10	INT
+match	2147483647	INT
+match	00	TRAP	leading zero
+match	01	TRAP	leading zero
+match	007	TRAP
+match	1abc	TRAP	digits glued to letters
+match	0x1F	TRAP	no hex literals
+
+# --- Identifiers
+match	x	IDENT
+match	X	IDENT
+match	_	IDENT	underscore alone
+match	_tmp	IDENT
+match	a_1	IDENT
+match	x1y2	IDENT
+match	__a__	IDENT
+match	camelCase	IDENT
+
+# --- Keywords
+match	function	KW_FUNCTION
+match	requires	KW_REQUIRES
+match	returns	KW_RETURNS
+match	ensures	KW_ENSURES
+match	uses	KW_USES
+match	int	KW_INT
+match	if	KW_IF
+match	else	KW_ELSE
+match	while	KW_WHILE
+match	invariant	KW_INVARIANT
+match	assert	KW_ASSERT
+match	assume	KW_ASSUME
+match	true	KW_TRUE
+match	false	KW_FALSE
+match	not	KW_NOT
+match	and	KW_AND
+match	or	KW_OR
+match	forall	KW_FORALL
+match	exists	KW_EXISTS
+match	length	KW_LENGTH
+match	iff	IDENT	keyword prefix
+match	whilex	IDENT
+match	i	IDENT	prefix of if/int/invariant
+match	in	IDENT
+match	If	IDENT	case-sensitive
+match	WHILE	IDENT
+match	integer	IDENT
+match	_if	IDENT
+match	if_	IDENT
+match	if1	IDENT
+
+# --- Operators and delimiters
+match	->	ARROW
+match	=>	IMPLIES
+match	==	EQ
+match	!=	NE
+match	<=	LE
+match	>=	GE
+match	<	LT
+match	>	GT
+match	=	ASSIGN
+match	+	PLUS
+match	-	MINUS
+match	*	STAR
+match	/	SLASH
+match	,	COMMA
+match	;	SEMI
+match	:	COLON
+match	|	PIPE
+match	(	LPAREN
+match	)	RPAREN
+match	[	LBRACKET
+match	]	RBRACKET
+match	{	LBRACE
+match	}	RBRACE
+match	!	REJECT	prefix of != only
+match	===	TRAP
+match	<>	TRAP
+
+# --- Comments
+match	//	COMMENT
+match	// comment	COMMENT
+match	//x = 1; // nested	COMMENT
+match	// a\n	TRAP	a comment ends before the newline
+
+# --- Outside the alphabet: trap
+match	\u00e9	TRAP	non-ASCII
+match	x\u00e9	TRAP
+match	\u0436	TRAP	Cyrillic
+match	// \u043a\u043e\u043c	COMMENT
+
+# --- Every ASCII code: letters and digits start tokens, every other code without a token is the trap
+match	ABCDEFGHIJKLMNOPQRSTUVWXYZ	IDENT
+match	abcdefghijklmnopqrstuvwxyz	IDENT
+match	_0123456789	IDENT
+match	1234567890	INT
+match	\x00	TRAP	NUL
+match	\x01	TRAP
+match	\x02	TRAP
+match	\x03	TRAP
+match	\x04	TRAP
+match	\x05	TRAP
+match	\x06	TRAP
+match	\x07	TRAP
+match	\x08	TRAP
+match	\x0b	TRAP	vertical tab is not WS
+match	\x0c	TRAP	form feed is not WS
+match	\x0e	TRAP
+match	\x0f	TRAP
+match	\x10	TRAP
+match	\x11	TRAP
+match	\x12	TRAP
+match	\x13	TRAP
+match	\x14	TRAP
+match	\x15	TRAP
+match	\x16	TRAP
+match	\x17	TRAP
+match	\x18	TRAP
+match	\x19	TRAP
+match	\x1a	TRAP
+match	\x1b	TRAP
+match	\x1c	TRAP
+match	\x1d	TRAP
+match	\x1e	TRAP
+match	\x1f	TRAP
+match	"	TRAP
+match	\x23	TRAP	#
+match	$	TRAP
+match	%	TRAP
+match	&	TRAP
+match	'	TRAP
+match	.	TRAP
+match	?	TRAP
+match	@	TRAP
+match	\x5c	TRAP	backslash
+match	^	TRAP
+match	`	TRAP
+match	~	TRAP
+match	\x7f	TRAP	DEL
+
+# --- Splitting into tokens: Funny code that lexes completely
+lex			empty input: no tokens
+lex	   \t  		only spaces and tabs
+lex	\r\n\r\n		only CRLF
+lex	// only a comment	
+lex	x = 1;	IDENT ASSIGN INT SEMI
+lex	x=1+2;	IDENT ASSIGN INT PLUS INT SEMI	no spaces
+lex	0 0 10	INT INT INT
+lex	a_b c_ _	IDENT IDENT IDENT
+lex	ifx if iff	IDENT KW_IF IDENT	keyword only as a whole word
+lex	if(x)	KW_IF LPAREN IDENT RPAREN	keyword glued to a delimiter
+lex	int[] a	KW_INT LBRACKET RBRACKET IDENT
+lex	not a and b or c	KW_NOT IDENT KW_AND IDENT KW_OR IDENT
+lex	()[]{},;	LPAREN RPAREN LBRACKET RBRACKET LBRACE RBRACE COMMA SEMI
+lex	+ - * / == != <= >= < > =	PLUS MINUS STAR SLASH EQ NE LE GE LT GT ASSIGN
+lex	a===b	IDENT EQ ASSIGN IDENT	longest match: == then =
+lex	a<==b	IDENT LE ASSIGN IDENT
+lex	a<b	IDENT LT IDENT
+lex	x--1	IDENT MINUS MINUS INT
+lex	a->b=>c	IDENT ARROW IDENT IMPLIES IDENT
+lex	a- >b	IDENT MINUS GT IDENT	space breaks ->
+lex	a/b	IDENT SLASH IDENT
+lex	a///b	IDENT	/// starts a comment
+lex	/* x */	SLASH STAR IDENT STAR SLASH	no block comments
+lex	x // comment\ny	IDENT IDENT	comment ends at the newline
+lex	x//c\r\ny	IDENT IDENT	CRLF after a comment
+lex	x // \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439\ny = 1;	IDENT IDENT ASSIGN INT SEMI	non-ASCII inside a comment
+lex	r = -1 + 2;	IDENT ASSIGN MINUS INT PLUS INT SEMI	step01/good_unary
+lex	mn, mx = minmax(b);\r\nif (mx != mn) { b[0] = mn; }	IDENT COMMA IDENT ASSIGN IDENT LPAREN IDENT RPAREN SEMI KW_IF LPAREN IDENT NE IDENT RPAREN LBRACE IDENT LBRACKET INT RBRACKET ASSIGN IDENT SEMI RBRACE	step14, CRLF
+lex	main() returns r:int {\n\tr = -1 + 2;\n}	IDENT LPAREN RPAREN KW_RETURNS IDENT COLON KW_INT LBRACE IDENT ASSIGN MINUS INT PLUS INT SEMI RBRACE	step01/good_unary, tab indent
+lex	safe_div(x:int, y:int) returns r:int {\n    assume y != 0;\n    r = x / y;\n    assert r * y == x;\n}	IDENT LPAREN IDENT COLON KW_INT COMMA IDENT COLON KW_INT RPAREN KW_RETURNS IDENT COLON KW_INT LBRACE KW_ASSUME IDENT NE INT SEMI IDENT ASSIGN IDENT SLASH IDENT SEMI KW_ASSERT IDENT STAR IDENT EQ IDENT SEMI RBRACE	step11/good_assert_assume
+lex	fact(n:int) requires n >= 0 returns r:int {\n    if (n == 0) r = 1; else r = n * fact(n - 1);\n}	IDENT LPAREN IDENT COLON KW_INT RPAREN KW_REQUIRES IDENT GE INT KW_RETURNS IDENT COLON KW_INT LBRACE KW_IF LPAREN IDENT EQ INT RPAREN IDENT ASSIGN INT SEMI KW_ELSE IDENT ASSIGN IDENT STAR IDENT LPAREN IDENT MINUS INT RPAREN SEMI RBRACE	step13/good_recursion_fact
+lex	incpos(x:int) requires x >= 0 returns y:int ensures y > x {\n    y = x + 1;\n}	IDENT LPAREN IDENT COLON KW_INT RPAREN KW_REQUIRES IDENT GE INT KW_RETURNS IDENT COLON KW_INT KW_ENSURES IDENT GT IDENT LBRACE IDENT ASSIGN IDENT PLUS INT SEMI RBRACE	step09/good_requires_ensures
+lex	sum(n:int) returns r:int {\n    i = 0;\n    r = 0;\n    while (i < n)\n        invariant 0 <= i and r == i * (i - 1) / 2\n    {\n        r = r + i;\n        i = i + 1;\n    }\n}	IDENT LPAREN IDENT COLON KW_INT RPAREN KW_RETURNS IDENT COLON KW_INT LBRACE IDENT ASSIGN INT SEMI IDENT ASSIGN INT SEMI KW_WHILE LPAREN IDENT LT IDENT RPAREN KW_INVARIANT INT LE IDENT KW_AND IDENT EQ IDENT STAR LPAREN IDENT MINUS INT RPAREN SLASH INT LBRACE IDENT ASSIGN IDENT PLUS IDENT SEMI IDENT ASSIGN IDENT PLUS INT SEMI RBRACE RBRACE	step10/good_invariant_sum
+lex	setfirst(a:int[]) returns b:int[] {\n    b = a;      // \u043a\u043e\u043f\u0438\u044f\n    b[0] = 42;  // \u043e\u0431\u0435\u0441\u0441\u0430\u0445\u0430\u0440\u0438\u0432\u0430\u0435\u0442\u0441\u044f\n}	IDENT LPAREN IDENT COLON KW_INT LBRACKET RBRACKET RPAREN KW_RETURNS IDENT COLON KW_INT LBRACKET RBRACKET LBRACE IDENT ASSIGN IDENT SEMI IDENT LBRACKET INT RBRACKET ASSIGN INT SEMI RBRACE	step07/good_array_update_sugar, Russian comments
+lex	is_sorted(a:int[], l:int, r:int) =>\n    forall (k:int | (l <= k and k + 1 <= r) -> a[k] <= a[k + 1]);	IDENT LPAREN IDENT COLON KW_INT LBRACKET RBRACKET COMMA IDENT COLON KW_INT COMMA IDENT COLON KW_INT RPAREN IMPLIES KW_FORALL LPAREN IDENT COLON KW_INT PIPE LPAREN IDENT LE IDENT KW_AND IDENT PLUS INT LE IDENT RPAREN ARROW IDENT LBRACKET IDENT RBRACKET LE IDENT LBRACKET IDENT PLUS INT RBRACKET RPAREN SEMI	step12 formula with the ASCII arrow ->
+
+# --- Splitting into tokens: code with a character no token starts with
+lex	x@y	ERROR 1
+lex	a!b	ERROR 1	lone ! is not !=
+lex	a!	ERROR 1	! at the end of input
+lex	x = 1\xe9;	ERROR 5	non-ASCII outside a comment
+lex	\u0436 = 1;	ERROR 0	Cyrillic identifier
+lex	s = "hi";	ERROR 4	no string literals
+lex	x = 1.5;	ERROR 5	no floats
+lex	x = a # b;	ERROR 6
+lex	x = a & b;	ERROR 6	only the keyword and
+lex	a ? b : c	ERROR 2
+lex	a\x0bb	ERROR 1	vertical tab is not WS
+lex	x = $;	ERROR 4
+lex	fact(n:int) returns r:int {\n    r = n % 2;\n}	ERROR 38	error inside a program
+lex	is_sorted(a:int[], l:int, r:int) =>\n    forall (k:int | l <= k \u2192 a[k] <= a[k + 1]);	ERROR 63	step12/good_formulas_sorted uses the Unicode arrow
+lex	x // \u043a\nx\u043a	ERROR 8	non-ASCII is allowed only until the comment ends
