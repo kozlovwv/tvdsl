@@ -1,0 +1,10 @@
+Program
+  Function head @1:1
+    params:
+      VarDef a int[] @1:6
+    returns:
+      VarDef h int @1:23
+    body: Block @1:29
+      Assign h @2:5
+        value: Index a @2:9
+          index: Num 0 @2:11

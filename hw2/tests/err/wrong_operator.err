@@ -1,0 +1,5 @@
+2:13: expected an expression, got '='
+3:7: expected '=', '[' or ',' after the name 'x', got ':'
+4:11: expected ')' after the condition of 'if', got '='
+5:12: expected an expression, got '>'
+6:12: expected an expression, got '*'

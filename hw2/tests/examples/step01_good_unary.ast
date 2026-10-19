@@ -1,0 +1,10 @@
+Program
+  Function main @1:1
+    returns:
+      VarDef r int @1:16
+    body: Block @1:22
+      Assign r @2:5
+        value: Binary + @2:12
+          Unary - @2:9
+            Num 1 @2:10
+          Num 2 @2:14

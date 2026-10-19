@@ -1,0 +1,7 @@
+main(a:int, b:int) returns r:int {
+    r = a === b;
+    x := 1;
+    if (a = b) r = 1;
+    if (a <> b) r = 2;
+    r = a +* b;
+}

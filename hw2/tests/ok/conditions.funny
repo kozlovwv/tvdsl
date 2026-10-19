@@ -1,0 +1,8 @@
+// Conditions: not > and > or > ->; -> is right-associative; comparisons take number expressions.
+main(a:int, b:int, c:int) returns r:int {
+    if (not a < b and b < c or a == c) r = 1;     // ((not (a < b)) and (b < c)) or (a == c)
+    if (a < b -> b < c -> a < c) r = 2;           // (a < b) -> ((b < c) -> (a < c))
+    if ((a + b) < c and (a < b)) r = 3;           // parentheses around a number and around a condition
+    if (not (a != b or true)) r = 4;
+    while (false) r = 5;
+}

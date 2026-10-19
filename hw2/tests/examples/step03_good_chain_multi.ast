@@ -1,0 +1,38 @@
+Program
+  Function split @1:1
+    params:
+      VarDef x int @1:7
+    returns:
+      VarDef a int @1:22
+      VarDef b int @1:29
+    body: Block @1:35
+      Assign a @1:37
+        value: Binary / @1:43
+          Var x @1:41
+          Num 2 @1:45
+      Assign b @1:48
+        value: Binary - @1:54
+          Var x @1:52
+          Var a @1:56
+  Function addpair @2:1
+    params:
+      VarDef p int @2:9
+      VarDef q int @2:16
+    returns:
+      VarDef s int @2:31
+    body: Block @2:37
+      Assign s @2:39
+        value: Binary + @2:45
+          Var p @2:43
+          Var q @2:47
+  Function main @4:1
+    returns:
+      VarDef r int @4:16
+    body: Block @4:22
+      MultiAssign p, q @5:5
+        call: Call split @5:12
+          Num 9 @5:18
+      Assign r @6:5
+        value: Call addpair @6:9
+          Var p @6:17
+          Var q @6:20

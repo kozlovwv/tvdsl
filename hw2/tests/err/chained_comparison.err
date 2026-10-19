@@ -1,0 +1,1 @@
+2:15: comparisons cannot be chained: write 'a < b and b < c'

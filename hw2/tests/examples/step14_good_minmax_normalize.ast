@@ -1,0 +1,76 @@
+Program
+  Function minmax @1:1
+    params:
+      VarDef a int[] @1:8
+    requires: Binary > @1:36
+      Call length @1:26
+        Var a @1:33
+      Num 0 @1:38
+    returns:
+      VarDef mn int @1:48
+      VarDef mx int @1:56
+    body: Block @1:63
+      Assign mn @2:5
+        value: Index a @2:10
+          index: Num 0 @2:12
+      Assign mx @3:5
+        value: Index a @3:10
+          index: Num 0 @3:12
+      Assign i @4:5
+        value: Num 1 @4:9
+      While @5:5
+        cond: Binary < @5:14
+          Var i @5:12
+          Call length @5:16
+            Var a @5:23
+        body: Block @5:27
+          If @6:9
+            cond: Binary < @6:18
+              Index a @6:13
+                index: Var i @6:15
+              Var mn @6:20
+            then: Assign mn @6:24
+              value: Index a @6:29
+                index: Var i @6:31
+          If @7:9
+            cond: Binary > @7:18
+              Index a @7:13
+                index: Var i @7:15
+              Var mx @7:20
+            then: Assign mx @7:24
+              value: Index a @7:29
+                index: Var i @7:31
+          Assign i @8:9
+            value: Binary + @8:15
+              Var i @8:13
+              Num 1 @8:17
+  Function normalize @12:1
+    params:
+      VarDef a int[] @12:11
+    requires: Binary >= @12:39
+      Call length @12:29
+        Var a @12:36
+      Num 2 @12:42
+    returns:
+      VarDef b int[] @12:52
+    body: Block @12:60
+      Assign b @13:5
+        value: Var a @13:9
+      MultiAssign mn, mx @14:5
+        call: Call minmax @14:14
+          Var b @14:21
+      If @15:5
+        cond: Binary != @15:12
+          Var mx @15:9
+          Var mn @15:15
+        then: Block @15:19
+          Assign b @15:21
+            value: Update @15:21
+              array: Var b @15:21
+              index: Num 0 @15:23
+              value: Var mn @15:28
+          Assign b @15:32
+            value: Update @15:32
+              array: Var b @15:32
+              index: Num 1 @15:34
+              value: Var mx @15:39

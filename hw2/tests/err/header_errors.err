@@ -1,0 +1,4 @@
+1:14: expected 'requires', 'returns' or '=>' after the parameters of 'nores', got '{'
+2:9: expected ':' and a type after 'x', got ')'
+3:9: expected '(' after the name 'noparen', got name 'x'
+4:11: expected 'int' (a type: int or int[]), got name 'bool'

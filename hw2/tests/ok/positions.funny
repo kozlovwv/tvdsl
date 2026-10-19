@@ -1,0 +1,6 @@
+// Positions: a tab is one column, CRLF ends a line, comments are skipped.
+main() returns r:int {
+	r = 1; // one
+		r =
+  2;
+}

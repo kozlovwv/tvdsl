@@ -1,0 +1,11 @@
+// A number where a condition is needed and the other way round.
+main(a:int, b:int) returns r:int {
+    if (r) r = 2;
+    while (a + 1) r = 3;
+    r = a < b;
+    r = (a and b) + 1;
+    r = not a;
+    assert r;
+    r = -(a < b);
+    if (true == false) r = 4;
+}

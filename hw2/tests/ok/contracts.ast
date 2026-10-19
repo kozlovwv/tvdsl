@@ -1,0 +1,127 @@
+Program
+  Formula sorted @2:1
+    params:
+      VarDef a int[] @2:8
+      VarDef l int @2:17
+      VarDef r int @2:24
+    body: Quantifier forall @3:5
+      var: VarDef k int @3:13
+      body: Binary -> @3:38
+        Binary and @3:28
+          Binary <= @3:23
+            Var l @3:21
+            Var k @3:26
+          Binary < @3:34
+            Var k @3:32
+            Var r @3:36
+        Binary <= @3:46
+          Index a @3:41
+            index: Var k @3:43
+          Index a @3:49
+            index: Binary + @3:53
+              Var k @3:51
+              Num 1 @3:55
+  Formula nonneg @5:1
+    params:
+      VarDef a int[] @5:8
+    body: Quantifier forall @5:20
+      var: VarDef k int @5:28
+      body: Binary -> @5:61
+        Binary and @5:43
+          Binary >= @5:38
+            Var k @5:36
+            Num 0 @5:41
+          Binary < @5:49
+            Var k @5:47
+            Call length @5:51
+              Var a @5:58
+        Binary >= @5:69
+          Index a @5:64
+            index: Var k @5:66
+          Num 0 @5:72
+  Formula has @7:1
+    params:
+      VarDef a int[] @7:5
+      VarDef v int @7:14
+    body: Quantifier exists @7:24
+      var: VarDef k int @7:32
+      body: Binary and @7:47
+        Binary >= @7:42
+          Var k @7:40
+          Num 0 @7:45
+        Binary == @7:56
+          Index a @7:51
+            index: Var k @7:53
+          Var v @7:59
+  Function sum @9:1
+    params:
+      VarDef a int[] @9:5
+    requires: Binary and @9:33
+      FormulaRef nonneg @9:23
+        Var a @9:30
+      Binary > @9:47
+        Call length @9:37
+          Var a @9:44
+        Num 0 @9:49
+    returns:
+      VarDef s int @9:59
+    ensures: Binary >= @9:75
+      Var s @9:73
+      Num 0 @9:78
+    uses:
+      VarDef i int @9:85
+      VarDef t @9:92
+    body: Block @9:94
+      Assign s @10:5
+        value: Num 0 @10:9
+      Assign i @11:5
+        value: Num 0 @11:9
+      While @12:5
+        cond: Binary < @12:14
+          Var i @12:12
+          Call length @12:16
+            Var a @12:23
+        invariant: Binary and @13:37
+          Binary and @13:26
+            Binary <= @13:21
+              Num 0 @13:19
+              Var i @13:24
+            Binary >= @13:32
+              Var s @13:30
+              Num 0 @13:35
+          Quantifier forall @13:41
+            var: VarDef j int @13:49
+            body: Binary -> @13:63
+              Binary < @13:59
+                Var j @13:57
+                Var i @13:61
+              Quantifier exists @13:66
+                var: VarDef m int @13:74
+                body: Binary == @13:84
+                  Var m @13:82
+                  Var j @13:87
+        body: Block @14:5
+          Assign s @15:9
+            value: Binary + @15:15
+              Var s @15:13
+              Index a @15:17
+                index: Var i @15:19
+          Assign i @16:9
+            value: Binary + @16:15
+              Var i @16:13
+              Num 1 @16:17
+      Assert @18:5
+        pred: Binary or @18:40
+          FormulaRef sorted @18:12
+            Var a @18:19
+            Num 0 @18:22
+            Binary - @18:35
+              Call length @18:25
+                Var a @18:32
+              Num 1 @18:37
+          Unary not @18:43
+            FormulaRef has @18:47
+              Var a @18:51
+              Num 0 @18:54
+      Assume @19:5
+        pred: BoolLit true @19:12

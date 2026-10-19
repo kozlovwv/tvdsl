@@ -1,0 +1,5 @@
+2:5: expected a statement, got 'else'
+3:8: expected '(' after 'if', got name 'a'
+4:18: expected ')' after the condition of 'while', got name 'r'
+6:5: expected ';' after the predicate of 'assert', got name 'r'
+7:5: expected a statement, got number '1'

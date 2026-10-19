@@ -1,0 +1,19 @@
+Program
+  Function add @1:1
+    params:
+      VarDef a int @1:5
+      VarDef b int @1:12
+    returns:
+      VarDef r int @1:27
+    body: Block @1:33
+      Assign r @1:35
+        value: Binary + @1:41
+          Var a @1:39
+          Var b @1:43
+  Function main @3:1
+    returns:
+      VarDef r int @3:16
+    body: Block @3:22
+      Assign r @4:5
+        value: Call add @4:9
+          Num 1 @4:13

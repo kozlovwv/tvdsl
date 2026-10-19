@@ -1,0 +1,22 @@
+Program
+  Function safe_div @1:1
+    params:
+      VarDef x int @1:10
+      VarDef y int @1:17
+    returns:
+      VarDef r int @1:32
+    body: Block @1:38
+      Assume @2:5
+        pred: Binary != @2:14
+          Var y @2:12
+          Num 0 @2:17
+      Assign r @3:5
+        value: Binary / @3:11
+          Var x @3:9
+          Var y @3:13
+      Assert @4:5
+        pred: Binary == @4:18
+          Binary * @4:14
+            Var r @4:12
+            Var y @4:16
+          Var x @4:21

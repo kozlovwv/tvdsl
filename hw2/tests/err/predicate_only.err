@@ -1,0 +1,3 @@
+3:9: 'forall' is allowed only in predicates (requires, ensures, invariant, assert, assume, formulas)
+4:12: the condition of 'while' must be a logical expression, got a call of 'sorted' (formula references are allowed only in predicates)
+5:9: 'exists' is allowed only in predicates (requires, ensures, invariant, assert, assume, formulas)

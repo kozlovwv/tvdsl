@@ -1,0 +1,16 @@
+// Panic mode: every error is reported once, the parser goes on after it, correct code gives no errors.
+first() returns r:int {
+    r = 1 +;
+    r = 2;
+    if (r > 0 { r = 3; }
+    r = 4
+}
+
+second(x:int returns r:int {
+    r = x;
+}
+
+third() returns r:int {
+    r = (1 + 2;
+    while (r) { r = r - 1; }
+}

@@ -1,0 +1,5 @@
+// Funny arrays are one-dimensional: a[i][j] = v is not in the grammar.
+main(a:int[]) returns b:int[] {
+    b = a;
+    b[0][1] = 2;
+}

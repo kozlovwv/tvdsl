@@ -1,0 +1,10 @@
+swap(a:int, b:int) returns x:int, y:int {
+    x = b;
+    y = a;
+}
+
+main() returns r:int {
+    p, q = swap(1, 2);
+    p, q, s = triple(length(arr), f(1), 3);
+    r = p - q;
+}

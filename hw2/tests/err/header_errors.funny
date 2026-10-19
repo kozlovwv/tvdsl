@@ -1,0 +1,5 @@
+nores(x:int) { x = 1; }
+notype(x) returns r:int { r = 1; }
+noparen x:int returns r:int { r = 1; }
+badtype(x:bool) returns r:int { r = 1; }
+ok(x:int) returns r:int { r = x; }

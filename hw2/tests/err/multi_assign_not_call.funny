@@ -1,0 +1,5 @@
+main() returns r:int {
+    x, y = a + 1;
+    x, y = 3;
+    x, = f(1);
+}

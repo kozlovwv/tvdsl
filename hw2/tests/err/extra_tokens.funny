@@ -1,0 +1,5 @@
+main() returns r:int {
+    r = 1 2;
+    r = 3;;
+    r = a[1]];
+}

@@ -1,0 +1,22 @@
+Program
+  Function countdown @1:1
+    params:
+      VarDef n int @1:11
+    returns:
+      VarDef r int @1:26
+    body: Block @1:32
+      Assign r @2:5
+        value: Num 0 @2:9
+      While @3:5
+        cond: Binary > @3:14
+          Var n @3:12
+          Num 0 @3:16
+        body: Block @3:19
+          Assign r @4:9
+            value: Binary + @4:15
+              Var r @4:13
+              Num 1 @4:17
+          Assign n @5:9
+            value: Binary - @5:15
+              Var n @5:13
+              Num 1 @5:17

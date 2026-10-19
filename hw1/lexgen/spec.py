@@ -1,12 +1,14 @@
 """Token spec files.
 
 Format, one rule per line:
-    NAME [skip] = regex
+    NAME [skip|error] = regex
 The regex is the rest of the line after the first '=', with surrounding whitespace stripped
 (write a space at the edge of a regex inside a class: [ ]). Lines starting with '#'
 and blank lines are ignored. Rule order is priority: of two equally long matches the
 earlier rule wins (so keywords go before IDENT).
-skip marks a token that is recognised but not emitted (whitespace, comments).
+Flags:
+    skip   the token is recognised but not emitted (whitespace, comments)
+    error  the token is recognised and reported as a lexical error (01)
 """
 
 import string
@@ -15,7 +17,7 @@ from pathlib import Path
 
 from . import regex
 
-FLAGS = {"skip"}
+FLAGS = {"skip", "error"}
 
 
 @dataclass(frozen=True)
@@ -24,6 +26,7 @@ class TokenRule:
     pattern: str
     regex: regex.Node
     skip: bool = False
+    error: bool = False
 
 
 class SpecError(ValueError):
@@ -57,7 +60,7 @@ def parse_spec(text: str, source: str = "<spec>") -> list[TokenRule]:
         except regex.RegexError as e:
             raise SpecError(f"{where}: {e}") from None
         names.add(name)
-        rules.append(TokenRule(name, pattern, node, "skip" in flags))
+        rules.append(TokenRule(name, pattern, node, "skip" in flags, "error" in flags))
     if not rules:
         raise SpecError(f"{source}: no token rules")
     return rules

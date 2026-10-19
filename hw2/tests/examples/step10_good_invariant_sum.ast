@@ -1,0 +1,37 @@
+Program
+  Function sum @1:1
+    params:
+      VarDef n int @1:5
+    returns:
+      VarDef r int @1:20
+    body: Block @1:26
+      Assign i @2:5
+        value: Num 0 @2:9
+      Assign r @3:5
+        value: Num 0 @3:9
+      While @4:5
+        cond: Binary < @4:14
+          Var i @4:12
+          Var n @4:16
+        invariant: Binary and @5:26
+          Binary <= @5:21
+            Num 0 @5:19
+            Var i @5:24
+          Binary == @5:32
+            Var r @5:30
+            Binary / @5:47
+              Binary * @5:37
+                Var i @5:35
+                Binary - @5:42
+                  Var i @5:40
+                  Num 1 @5:44
+              Num 2 @5:49
+        body: Block @6:5
+          Assign r @7:9
+            value: Binary + @7:15
+              Var r @7:13
+              Var i @7:17
+          Assign i @8:9
+            value: Binary + @8:15
+              Var i @8:13
+              Num 1 @8:17

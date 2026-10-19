@@ -1,0 +1,4 @@
+main() returns r:int {
+    while (r < 10) {
+        r = r + 1;
+}

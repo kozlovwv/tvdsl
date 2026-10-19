@@ -1,0 +1,13 @@
+Program
+  Function foo @1:1
+    params:
+      VarDef x int @1:5
+    returns:
+      VarDef r int @1:20
+    body: Block @1:26
+      Assign x @2:5
+        value: Binary + @2:11
+          Var x @2:9
+          Num 1 @2:13
+      Assign r @3:5
+        value: Var x @3:9

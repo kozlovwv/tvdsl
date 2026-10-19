@@ -1,0 +1,142 @@
+(* Funny: the final LL(1) grammar of the HW2 parser.
+
+   Notation (EBNF, ISO 14977 style with concatenation by juxtaposition instead of ","): "x" is a terminal
+   string, { ... } repeats zero or more times, [ ... ] is optional,
+   | separates alternatives, a - b means "a, but not b". The grammar is self-contained: the syntax below is
+   written over tokens, and the tokens (identifier, integer, keywords, operators) are defined in the
+   "Lexical structure" section at the end - the same rules as hw1/tokens.spec.
+   Every decision below is made by one lookahead token; the FIRST sets of alternatives are listed where it
+   is not obvious. Differences from funny.ru.md are marked DEVIATION and listed in README.md. *)
+
+
+(* ---------- Module ---------- *)
+
+program     = item { item } ;                         (* the whole input; an empty program is an error *)
+
+item        = [ "function" ] identifier "(" [ params ] ")" itemRest ;
+                                                      (* DEVIATION: optional "function" as in P02/P03 *)
+itemRest    = "=>" predicate [ ";" ]                  (* formula  : FIRST = { "=>" } *)
+            | [ "requires" predicate ]                (* function : FIRST = { "requires", "returns" } *)
+              "returns" params
+              [ "ensures" predicate ]
+              [ "uses" localDef { "," localDef } ]
+              statement ;
+              (* the common prefix name "(" params ")" of function and formula is factored out;
+                 DEVIATION: optional ";" after a formula, as in project/examples/step12 *)
+
+params      = varDef { "," varDef } ;
+varDef      = identifier ":" type ;
+localDef    = identifier [ ":" type ] ;
+type        = "int" [ "[" "]" ] ;                     (* int | int[] *)
+
+
+(* ---------- Statements ---------- *)
+
+statement   = block                                   (* FIRST = { "{" }      *)
+            | "if" "(" condition ")" statement [ "else" statement ]
+            | "while" "(" condition ")" [ "invariant" predicate ] statement
+            | "assert" predicate ";"
+            | "assume" predicate ";"
+            | assignment ;                            (* FIRST = { identifier } *)
+
+block       = "{" { statement } "}" ;
+
+(* The three assignment forms share the prefix identifier; it is factored out and the form is chosen
+   by the token after the name: "=", "[" or ",". *)
+assignment  = identifier assignRest ;
+assignRest  = "=" expr ";"                            (* x = e;                                    *)
+            | "[" expr "]" "=" expr ";"               (* a[i] = e;  desugared to a = update(a, i, e) *)
+            | "," identifier { "," identifier }
+              "=" call ";" ;                          (* x, y = f(...);                            *)
+
+(* Dangling else: "else" belongs to the nearest "if" - the parser takes "else" as soon as it sees it. *)
+
+
+(* ---------- Expressions, conditions, predicates ---------- *)
+
+(* funny.ru.md gives three separate grammars: expr (numbers), condition and predicate (truth values).
+   They are not LL(k) for any k: in a condition, "(" may open "(a + b) < c" (an expr) or "(a < b) and c"
+   (a condition), and the matching ")" can be arbitrarily far away. The same holds for "f(x)" - a function
+   call inside a comparison or a formula reference.
+
+   So the parser uses ONE grammar for all three (below, LL(1)) and gives every node a sort:
+       num  - expr        : numbers, variables, a[i], arithmetic, function calls
+       bool - condition   : true/false, comparisons, not/and/or/->, quantifiers, formula references
+   Each operator states the sorts of its operands, and the parser checks them right after building the node,
+   reporting an error with the operator's position. A call f(...) gets its sort from where it stands:
+   a function call where a number is needed, a formula reference where a truth value is needed.
+   Together the unified grammar and the sort check accept exactly the programs of the three grammars
+   of funny.ru.md (apart from the deviations below). *)
+
+condition   = boolExpr ;                              (* if/while: sort bool, no quantifiers and formula refs *)
+predicate   = boolExpr ;                              (* requires/ensures/invariant/assert/assume/formula:
+                                                         sort bool, quantifiers and formula refs allowed *)
+expr        = boolExpr ;                              (* assignment value, index, argument: sort num *)
+
+(* Precedence from weakest to strongest, one nonterminal per level:
+      ->            right-associative                 implies
+      or            left-associative                  orExpr
+      and           left-associative                  andExpr
+      not           prefix                            notExpr
+      == != < <= > >=   non-associative (a < b < c is an error)   comparison
+      + -           left-associative                  sum
+      * /           left-associative                  product
+      - (unary)     prefix                            unary
+   The left recursion of funny.ru.md (expr "+" expr) is replaced by repetition { ... },
+   which keeps left associativity: a - b - c = (a - b) - c. *)
+
+boolExpr    = implies ;
+implies     = orExpr [ "->" implies ] ;               (* DEVIATION: "->" also in predicates *)
+orExpr      = andExpr { "or" andExpr } ;
+andExpr     = notExpr { "and" notExpr } ;
+notExpr     = "not" notExpr | comparison ;
+comparison  = sum [ relOp sum ] ;
+relOp       = "==" | "!=" | "<" | "<=" | ">" | ">=" ;
+sum         = product { ( "+" | "-" ) product } ;
+product     = unary { ( "*" | "/" ) unary } ;
+unary       = "-" unary | primary ;
+
+primary     = integer
+            | "true" | "false"
+            | "(" boolExpr ")"
+            | quantifier                              (* FIRST = { "forall", "exists" } *)
+            | "length" "(" [ args ] ")"               (* length is a keyword token (HW1), a builtin call *)
+            | identifier [ "(" [ args ] ")"           (* call / formula reference *)
+                         | "[" expr "]" ] ;           (* array access: only a variable can be indexed *)
+
+quantifier  = ( "forall" | "exists" ) "(" varDef "|" predicate ")" ;
+call        = ( identifier | "length" ) "(" [ args ] ")" ;
+args        = expr { "," expr } ;
+
+
+(* ---------- Lexical structure ---------- *)
+
+(* The input is split into tokens by the longest match; when several tokens match a prefix of the same
+   length, the earlier rule wins (so keywords beat identifier). Whitespace and comments separate tokens
+   and are dropped. The alphabet is ASCII; any other character is a lexical error. *)
+
+identifier  = ( ( letter | "_" ) { letter | digit | "_" } ) - keyword ;
+integer     = "0" | nonzero { digit } ;               (* no leading zeros: 007 is an error *)
+                                                      (* digits glued to letters (1abc) are an error, not
+                                                         integer + identifier *)
+
+keyword     = "function" | "requires" | "returns" | "ensures" | "uses" | "int"
+            | "if" | "else" | "while" | "invariant" | "assert" | "assume"
+            | "true" | "false" | "not" | "and" | "or" | "forall" | "exists" | "length" ;
+
+operator    = "->" | "=>" | "==" | "!=" | "<=" | ">=" | "<" | ">" | "="
+            | "+" | "-" | "*" | "/" | "," | ";" | ":" | "|"
+            | "(" | ")" | "[" | "]" | "{" | "}" ;
+
+whitespace  = ( " " | tab | cr | lf ) { " " | tab | cr | lf } ;
+comment     = "//" { ? any ASCII character except lf ? } ;
+
+letter      = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M"
+            | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+            | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m"
+            | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" ;
+digit       = "0" | nonzero ;
+nonzero     = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+tab         = ? ASCII 9, horizontal tab ? ;
+lf          = ? ASCII 10, line feed ? ;
+cr          = ? ASCII 13, carriage return ? ;

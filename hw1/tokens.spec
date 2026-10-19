@@ -1,5 +1,5 @@
 # Token spec of the Funny language.
-#   NAME [skip] = regex
+#   NAME [skip|error] = regex
 # Order is priority on equal-length matches: keywords must precede IDENT.
 # Alphabet is ASCII; any other character leads to the trap.
 
@@ -28,6 +28,9 @@ KW_LENGTH    = length
 
 IDENT        = [A-Za-z_][A-Za-z0-9_]*
 INT          = 0|[1-9][0-9]*
+# Leading zeros (00, 01) and digits glued to letters (1abc) are lexical errors,
+# not two tokens INT INT / INT IDENT.
+BAD_NUMBER error = 0[0-9]+|[0-9]+[A-Za-z_][A-Za-z0-9_]*
 
 # Multi-char operators; longest match picks them over their one-char prefixes.
 ARROW        = ->

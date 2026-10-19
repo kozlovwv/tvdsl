@@ -2,15 +2,16 @@
 
 classify: the whole text as one token.
 tokenize: the text split into tokens by longest match; ties are already resolved in the table
-by rule priority. Skip tokens (whitespace, comments) are recognised but dropped.
+by rule priority. Skip tokens (whitespace, comments) are recognised but dropped;
+error tokens (01) are recognised and reported as a lexical error.
 """
 
 from .table import LexTable
 
 
 class LexError(Exception):
-    def __init__(self, ch: str, pos: int) -> None:
-        super().__init__(f"offset {pos}: no token starts with {ch!r}")
+    def __init__(self, message: str, pos: int) -> None:
+        super().__init__(f"offset {pos}: {message}")
         self.pos = pos
 
 
@@ -42,8 +43,10 @@ def tokenize(table: LexTable, text: str) -> list[tuple[str, str]]:
             if (kind := table.accept[state]) is not None:
                 last = (i, kind)
         if last is None:
-            raise LexError(text[pos], pos)
+            raise LexError(f"no token starts with {text[pos]!r}", pos)
         end, kind = last
+        if kind in table.errors:
+            raise LexError(f"malformed token {text[pos:end]!r} ({kind})", pos)
         if kind not in table.skip:
             tokens.append((kind, text[pos:end]))
         pos = end

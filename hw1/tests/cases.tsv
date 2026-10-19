@@ -16,11 +16,11 @@ match	0	INT
 match	7	INT
 match	10	INT
 match	2147483647	INT
-match	00	TRAP	leading zero
-match	01	TRAP	leading zero
-match	007	TRAP
-match	1abc	TRAP	digits glued to letters
-match	0x1F	TRAP	no hex literals
+match	00	BAD_NUMBER	leading zero
+match	01	BAD_NUMBER	leading zero
+match	007	BAD_NUMBER
+match	1abc	BAD_NUMBER	digits glued to letters
+match	0x1F	BAD_NUMBER	no hex literals
 
 # --- Identifiers
 match	x	IDENT
@@ -206,3 +206,6 @@ lex	x = $;	ERROR 4
 lex	fact(n:int) returns r:int {\n    r = n % 2;\n}	ERROR 38	error inside a program
 lex	is_sorted(a:int[], l:int, r:int) =>\n    forall (k:int | l <= k \u2192 a[k] <= a[k + 1]);	ERROR 63	step12/good_formulas_sorted uses the Unicode arrow
 lex	x // \u043a\nx\u043a	ERROR 8	non-ASCII is allowed only until the comment ends
+lex	x = 01;	ERROR 4	leading zero: BAD_NUMBER, not INT INT
+lex	a[1abc]	ERROR 2	digits glued to letters
+lex	0 0 01	ERROR 4

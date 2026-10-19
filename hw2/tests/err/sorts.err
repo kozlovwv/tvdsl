@@ -1,0 +1,8 @@
+3:9: the condition of 'if' must be a logical expression, got a number expression
+4:14: the condition of 'while' must be a logical expression, got a number expression
+5:11: the assigned value must be a number expression, got a logical expression
+6:10: an operand of 'and' must be a logical expression, got a number expression
+7:13: the operand of 'not' must be a logical expression, got a number expression
+8:12: the predicate of 'assert' must be a logical expression, got a number expression
+9:13: the operand of unary '-' must be a number expression, got a logical expression
+10:9: the left side of '==' must be a number expression, got a logical expression

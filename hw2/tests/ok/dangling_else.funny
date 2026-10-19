@@ -1,0 +1,5 @@
+// else belongs to the nearest if.
+choose(x:int, y:int) returns r:int {
+    if (x > y) if (x > 0) r = x; else r = y;
+    if (x > y) { if (x > 0) r = x; } else r = y;
+}

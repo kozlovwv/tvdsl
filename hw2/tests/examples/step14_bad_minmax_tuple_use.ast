@@ -1,0 +1,23 @@
+Program
+  Function minmax @1:1
+    params:
+      VarDef a int[] @1:8
+    returns:
+      VarDef mn int @1:25
+      VarDef mx int @1:33
+    body: Block @1:40
+      Assign mn @1:42
+        value: Num 0 @1:47
+      Assign mx @1:50
+        value: Num 0 @1:55
+  Function normalize @3:1
+    params:
+      VarDef a int[] @3:11
+    returns:
+      VarDef b int[] @3:28
+    body: Block @3:36
+      Assign b @4:5
+        value: Var a @4:9
+      Assign t @5:5
+        value: Call minmax @5:9
+          Var b @5:16

@@ -1,0 +1,6 @@
+main() returns r:int {
+    r = 01;
+    r = 1abc + 007;
+    r = a @ b;
+    s = "x";
+}

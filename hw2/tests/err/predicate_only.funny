@@ -1,0 +1,6 @@
+// Quantifiers and formula references are allowed only in predicates, not in if/while conditions.
+main(a:int[]) returns r:int {
+    if (forall (k:int | a[k] > 0)) r = 1;
+    while (sorted(a)) r = 2;
+    r = exists (k:int | true);
+}

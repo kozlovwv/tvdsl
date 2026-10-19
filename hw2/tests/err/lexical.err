@@ -1,0 +1,6 @@
+2:9: malformed number '01'
+3:9: malformed number '1abc'
+3:16: malformed number '007'
+4:11: unexpected character '@'
+5:9: unexpected character '"'
+5:11: unexpected character '"'

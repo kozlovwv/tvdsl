@@ -1,0 +1,7 @@
+// Array access and the update sugar a[i] = v  ->  a = Update(a, i, v).
+upd(a:int[], i:int) returns b:int[] {
+    b = a;                    // copy
+    b[0] = 42;
+    b[i + 1] = b[0] + a[length(a) - 1];
+    b[a[0]] = -b[i];
+}

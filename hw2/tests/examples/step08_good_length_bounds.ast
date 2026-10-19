@@ -1,0 +1,17 @@
+Program
+  Function getlast @1:1
+    params:
+      VarDef a int[] @1:9
+    requires: Binary > @1:37
+      Call length @1:27
+        Var a @1:34
+      Num 0 @1:39
+    returns:
+      VarDef r int @1:49
+    body: Block @1:55
+      Assign r @2:5
+        value: Index a @2:9
+          index: Binary - @2:21
+            Call length @2:11
+              Var a @2:18
+            Num 1 @2:23

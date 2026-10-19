@@ -1,0 +1,8 @@
+main(a:int) returns r:int {
+    else r = 1;
+    if a > 0 r = 1;
+    while (a > 0 r = 2;
+    assert a > 0
+    r = 3;
+    1 = r;
+}

@@ -1,0 +1,9 @@
+Program
+  Function main @2:1
+    returns:
+      VarDef r int @2:16
+    body: Block @2:22
+      Assign r @3:2
+        value: Num 1 @3:6
+      Assign r @4:3
+        value: Num 2 @5:3

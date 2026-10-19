@@ -1,0 +1,11 @@
+Program
+  Function fact @1:1
+    params:
+      VarDef n int @1:6
+    returns:
+      VarDef r int @1:21
+    body: Block @1:27
+      Assign r @2:5
+        value: Call fact @2:9
+          Var n @2:14
+          Num 1 @2:17

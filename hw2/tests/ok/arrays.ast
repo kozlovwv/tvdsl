@@ -1,0 +1,37 @@
+Program
+  Function upd @2:1
+    params:
+      VarDef a int[] @2:5
+      VarDef i int @2:14
+    returns:
+      VarDef b int[] @2:29
+    body: Block @2:37
+      Assign b @3:5
+        value: Var a @3:9
+      Assign b @4:5
+        value: Update @4:5
+          array: Var b @4:5
+          index: Num 0 @4:7
+          value: Num 42 @4:12
+      Assign b @5:5
+        value: Update @5:5
+          array: Var b @5:5
+          index: Binary + @5:9
+            Var i @5:7
+            Num 1 @5:11
+          value: Binary + @5:21
+            Index b @5:16
+              index: Num 0 @5:18
+            Index a @5:23
+              index: Binary - @5:35
+                Call length @5:25
+                  Var a @5:32
+                Num 1 @5:37
+      Assign b @6:5
+        value: Update @6:5
+          array: Var b @6:5
+          index: Index a @6:7
+            index: Num 0 @6:9
+          value: Unary - @6:15
+            Index b @6:16
+              index: Var i @6:18

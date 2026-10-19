@@ -1,0 +1,12 @@
+Program
+  Function setfirst @1:1
+    params:
+      VarDef a int[] @1:10
+    returns:
+      VarDef b int[] @1:27
+    body: Block @1:35
+      Assign a @2:5
+        value: Update @2:5
+          array: Var a @2:5
+          index: Num 0 @2:7
+          value: Num 1 @2:12

@@ -1,0 +1,6 @@
+3:12: expected an expression, got ';'
+5:15: expected ')' after the condition of 'if', got '{'
+7:1: expected ';' after the assignment, got '}'
+9:14: expected ')' after the parameters, got 'returns'
+14:15: expected ')' to close '(' at 14:9, got ';'
+15:12: the condition of 'while' must be a logical expression, got a number expression

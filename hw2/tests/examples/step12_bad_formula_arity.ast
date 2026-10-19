@@ -1,0 +1,18 @@
+Program
+  Formula is_sorted @1:1
+    params:
+      VarDef a int[] @1:11
+      VarDef l int @1:20
+      VarDef r int @1:27
+    body: BoolLit true @1:37
+  Function check @3:1
+    params:
+      VarDef a int[] @3:7
+    returns:
+      VarDef ok int @3:24
+    body: Block @3:31
+      Assign ok @4:5
+        value: Num 1 @4:10
+      Assert @5:5
+        pred: FormulaRef is_sorted @5:12
+          Var a @5:22

@@ -1,0 +1,9 @@
+// Blocks (also empty and nested), a body that is not a block, while without a block.
+inc(x:int) returns y:int y = x + 1;
+
+main(n:int) returns r:int {
+    {}
+    { { r = 0; } }
+    while (r < n) r = r + 1;
+    if (r == n) {} else { r = 0; }
+}

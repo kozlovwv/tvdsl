@@ -23,6 +23,7 @@ class LexTable:
     transitions: list[list[int]]  # [state][symbol] -> state
     accept: list[str | None]  # token name accepted in the state
     skip: frozenset[str]
+    errors: frozenset[str]
 
     def step(self, state: int, ch: str) -> int:
         return self.transitions[state][symbol(ch)]
@@ -35,6 +36,7 @@ class LexTable:
             transitions=dfa.trans,
             accept=[None if a is None else rules[a].name for a in dfa.accept],
             skip=frozenset(r.name for r in rules if r.skip),
+            errors=frozenset(r.name for r in rules if r.error),
         )
 
     def to_json(self) -> dict[str, Any]:
@@ -44,6 +46,7 @@ class LexTable:
             "start": self.start,
             "trap": self.trap,
             "skip": sorted(self.skip),
+            "errors": sorted(self.errors),
             "accept": self.accept,
             "transitions": self.transitions,
         }

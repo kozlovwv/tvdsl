@@ -1,0 +1,10 @@
+Program
+  Function foo @1:1
+    params:
+      VarDef x int @1:5
+    returns:
+      VarDef r int @1:20
+    body: Block @1:26
+      Assign r @2:5
+        value: Call length @2:9
+          Var x @2:16

@@ -1,0 +1,9 @@
+// Arithmetic: * / bind tighter than + -, all left-associative; unary minus binds tightest.
+main(a:int, b:int, c:int) returns r:int {
+    r = 1 + 2 * 3 - 4 / 2;   // (1 + (2 * 3)) - (4 / 2)
+    r = a - b - c;           // (a - b) - c
+    r = a / b * c;           // (a / b) * c
+    r = -a * b;              // (-a) * b
+    r = - -a;                // -(-a)
+    r = (a + b) * (c - 1);
+}

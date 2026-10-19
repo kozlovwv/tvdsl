@@ -1,0 +1,23 @@
+Program
+  Function fact @1:1
+    params:
+      VarDef n int @1:6
+    requires: Binary >= @1:24
+      Var n @1:22
+      Num 0 @1:27
+    returns:
+      VarDef r int @1:37
+    body: Block @1:43
+      If @2:5
+        cond: Binary == @2:11
+          Var n @2:9
+          Num 0 @2:14
+        then: Assign r @2:17
+          value: Num 1 @2:21
+        else: Assign r @2:29
+          value: Binary * @2:35
+            Var n @2:33
+            Call fact @2:37
+              Binary - @2:44
+                Var n @2:42
+                Num 1 @2:46
