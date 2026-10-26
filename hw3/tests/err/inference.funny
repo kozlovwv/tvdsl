@@ -1,0 +1,27 @@
+conflict(a:int[]) returns r:int uses tmp {
+    tmp = 1;
+    tmp = a;            // tmp is already int
+    r = tmp;
+}
+
+by_use(a:int[]) returns r:int uses k {
+    r = k + 1;          // the use fixes k: int
+    k = a;
+}
+
+in_expr(a:int[]) returns r:int {
+    b = a;
+    r = b + 1;          // b is int[]
+}
+
+unknown(x:int) returns r:int uses never, t, u {
+    t = u;              // neither t nor u gets a type
+    r = x;
+}
+
+no_cascade(x:int) returns r:int {
+    t = two(x);         // one error, not "cannot infer t" in addition
+    r = t;
+}
+
+two(x:int) returns a:int, b:int { a = x; b = x; }

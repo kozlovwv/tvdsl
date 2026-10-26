@@ -1,0 +1,22 @@
+// Bonus: types of locals without annotation.
+copy(a:int[]) returns b:int[] uses tmp, arr {
+    tmp = 1;            // tmp: int from the first assignment
+    tmp = tmp + 2;
+    arr = a;            // arr: int[] from the copy of a parameter
+    b = arr;
+}
+
+implicit(x:int) returns r:int {
+    i = 0;              // no 'uses': the first assignment declares i, type int
+    p, q = pair(x);     // p, q: int from the returns of pair
+    r = i + p + q;
+}
+
+pair(x:int) returns u:int, v:int { u = x; v = x; }
+
+sugar(n:int) returns r:int uses a, t, u {
+    a[0] = 42;          // a = set(a, 0, 42): a is int[] (the example of funny.ru.md)
+    t = u;              // t and u are unified, both still unknown
+    u = a[0];           // now both are int
+    r = t;
+}

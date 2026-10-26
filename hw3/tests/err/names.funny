@@ -1,0 +1,24 @@
+dup(x:int, x:int) returns x:int uses y, y:int {
+    x = 1;
+    y = 1;
+}
+
+dup(a:int) returns r:int { r = a; }
+
+contracts(x:int) requires r > 0 and t > 0 returns r:int ensures t == x uses t:int {
+    r = x;
+    t = r;
+}
+
+use_before(n:int) returns r:int {
+    r = later + 1;
+    later = n;
+    r = nothing;
+}
+
+calls(n:int) returns r:int {
+    r = nofunc(n, undefined);
+    assert noformula(n);
+    assert forall (n:int | n > 0);
+    assert forall (k:int | exists (k:int | k > 0));
+}

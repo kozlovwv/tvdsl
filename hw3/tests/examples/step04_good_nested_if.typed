@@ -1,0 +1,22 @@
+Program
+  Function choose @1:1
+    params:
+      VarDef x int @1:8
+      VarDef y int @1:15
+    returns:
+      VarDef r int @1:30
+    body: Block @1:36
+      If @2:5
+        cond: Binary > @2:11 : bool
+          Var x @2:9 : int
+          Var y @2:13 : int
+        then: If @2:16
+          cond: Binary > @2:22 : bool
+            Var x @2:20 : int
+            Num 0 @2:24 : int
+          then: Assign r @2:27
+            value: Var x @2:31 : int
+          else: Assign r @2:39
+            value: Var y @2:43 : int
+        else: Assign r @3:10
+          value: Var y @3:14 : int

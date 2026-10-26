@@ -1,0 +1,28 @@
+Program
+  Function swap @1:1
+    params:
+      VarDef a int @1:6
+      VarDef b int @1:13
+    returns:
+      VarDef x int @1:28
+      VarDef y int @1:35
+    body: Block @1:41
+      Assign x @2:5
+        value: Var b @2:9 : int
+      Assign y @3:5
+        value: Var a @3:9 : int
+  Function main @6:1
+    returns:
+      VarDef r int @6:16
+    uses:
+      VarDef x int @7:5
+      VarDef y int @7:5
+    body: Block @6:22
+      MultiAssign x, y @7:5
+        call: Call swap @7:12 : (int, int)
+          Num 1 @7:17 : int
+          Num 2 @7:20 : int
+      Assign r @8:5
+        value: Binary - @8:11 : int
+          Var x @8:9 : int
+          Var y @8:13 : int

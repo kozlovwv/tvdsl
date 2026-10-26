@@ -1,0 +1,74 @@
+Program
+  Function copy @2:1
+    params:
+      VarDef a int[] @2:6
+    returns:
+      VarDef b int[] @2:23
+    uses:
+      VarDef tmp int @2:36
+      VarDef arr int[] @2:41
+    body: Block @2:45
+      Assign tmp @3:5
+        value: Num 1 @3:11 : int
+      Assign tmp @4:5
+        value: Binary + @4:15 : int
+          Var tmp @4:11 : int
+          Num 2 @4:17 : int
+      Assign arr @5:5
+        value: Var a @5:11 : int[]
+      Assign b @6:5
+        value: Var arr @6:9 : int[]
+  Function implicit @9:1
+    params:
+      VarDef x int @9:10
+    returns:
+      VarDef r int @9:25
+    uses:
+      VarDef i int @10:5
+      VarDef p int @11:5
+      VarDef q int @11:5
+    body: Block @9:31
+      Assign i @10:5
+        value: Num 0 @10:9 : int
+      MultiAssign p, q @11:5
+        call: Call pair @11:12 : (int, int)
+          Var x @11:17 : int
+      Assign r @12:5
+        value: Binary + @12:15 : int
+          Binary + @12:11 : int
+            Var i @12:9 : int
+            Var p @12:13 : int
+          Var q @12:17 : int
+  Function pair @15:1
+    params:
+      VarDef x int @15:6
+    returns:
+      VarDef u int @15:21
+      VarDef v int @15:28
+    body: Block @15:34
+      Assign u @15:36
+        value: Var x @15:40 : int
+      Assign v @15:43
+        value: Var x @15:47 : int
+  Function sugar @17:1
+    params:
+      VarDef n int @17:7
+    returns:
+      VarDef r int @17:22
+    uses:
+      VarDef a int[] @17:33
+      VarDef t int @17:36
+      VarDef u int @17:39
+    body: Block @17:41
+      Assign a @18:5
+        value: Update @18:5 : int[]
+          array: Var a @18:5 : int[]
+          index: Num 0 @18:7 : int
+          value: Num 42 @18:12 : int
+      Assign t @19:5
+        value: Var u @19:9 : int
+      Assign u @20:5
+        value: Index a @20:9 : int
+          index: Num 0 @20:11 : int
+      Assign r @21:5
+        value: Var t @21:9 : int

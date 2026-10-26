@@ -1,0 +1,1 @@
+5:9: 'minmax' returns 2 values and cannot be used in an expression: assign them with 'mn, mx = minmax(...);'

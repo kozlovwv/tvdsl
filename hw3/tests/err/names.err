@@ -1,0 +1,15 @@
+1:12: 'x' is already declared as a parameter at 1:5
+1:27: 'x' is already declared as a parameter at 1:5
+1:41: 'y' is already declared as a local at 1:38
+2:5: cannot assign to parameter 'x': parameters are read-only
+6:1: 'dup' is already defined as a function at 1:1
+8:27: 'requires' may use only parameters, but 'r' is a return value
+8:37: 'requires' may use only parameters, but 't' is a local
+8:65: 'ensures' may use only parameters and return values, but 't' is a local
+14:9: unknown variable 'later'
+16:9: unknown variable 'nothing'
+20:9: unknown function 'nofunc'
+20:19: unknown variable 'undefined'
+21:12: unknown formula 'noformula'
+22:20: quantifier variable 'n' clashes with the parameter declared at 19:7
+23:36: quantifier variable 'k' clashes with the quantifier variable declared at 23:20

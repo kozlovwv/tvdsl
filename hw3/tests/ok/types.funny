@@ -1,0 +1,21 @@
+// Every kind of expression and statement with its type.
+divmod(x:int, y:int) requires y != 0 returns q:int, m:int ensures x == q * y + m {
+    q = x / y;
+    m = x - q * y;
+}
+
+swap01(a:int[]) requires length(a) >= 2 returns b:int[] ensures b[0] == a[1] and b[1] == a[0] {
+    b = a;
+    b[0] = a[1];
+    b[1] = a[0];
+}
+
+main(a:int[]) requires length(a) > 1 returns r:int, s:int[] uses t:int, c:int[] {
+    t, r = divmod(-a[0] + 7, 2);
+    c = swap01(a);
+    s = c;
+    s[length(s) - 1] = t * r;
+    if (not (t == r) or t < 0 and r >= 0) r = t; else { }
+    assume t != 0;
+    assert length(swap01(s)) == length(a) -> true;
+}

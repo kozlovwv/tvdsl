@@ -1,0 +1,21 @@
+6:9: the left side of '+' must be int, got int[]
+7:9: 'x' is indexed, so it must be int[], got int
+8:11: the index of 'a' must be int, got int[]
+9:16: the argument of 'length' must be int[], got int
+9:21: 'length' takes 1 argument, got 2
+10:9: the left side of '==' must be int, got int[]
+10:14: the right side of '==' must be int, got int[]
+10:22: the operand of '-' must be int, got int[]
+14:11: argument 1 of 'g' (x) must be int, got int[]
+15:9: 'g' takes 1 argument, got 2
+16:9: 'f' returns 2 values and cannot be used in an expression: assign them with 'r, s = f(...);'
+17:5: 'f' returns 2 values, but 3 variables are assigned
+17:5: cannot assign to parameter 'x': parameters are read-only
+18:5: cannot assign int to 's' of type int[]
+18:5: cannot assign int[] to 'r' of type int
+19:9: 'p' is a formula, not a function: formulas can be used only as conditions in predicates
+20:12: 'g' is a function, not a formula: a condition is needed here
+24:5: cannot assign to parameter 'a': parameters are read-only
+25:5: cannot assign int[] to 'r' of type int
+26:5: cannot assign int to 't' of type int[]
+27:12: an element of 't' must be int, got int[]

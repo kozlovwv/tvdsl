@@ -1,0 +1,28 @@
+f(a:int[], x:int) returns r:int, s:int[] { r = x; s = a; }
+g(x:int) returns y:int { y = x; }
+p(x:int) => x > 0;
+
+arith(a:int[], x:int) returns r:int {
+    r = a + 1;
+    r = x[0];
+    r = a[a];
+    r = length(x) + length(a, a);
+    if (a == a) r = -a;
+}
+
+calls(a:int[], x:int) returns r:int, s:int[] {
+    r = g(a);
+    r = g(x, x);
+    r = f(a, x);
+    r, s, x = f(a, x);
+    s, r = f(a, x);
+    r = p(x);
+    assert g(x);
+}
+
+assign(a:int[], x:int) returns r:int uses t:int[] {
+    a[0] = 1;
+    r = a;
+    t = x;
+    t[x] = a;
+}

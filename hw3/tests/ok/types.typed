@@ -1,0 +1,130 @@
+Program
+  Function divmod @2:1
+    params:
+      VarDef x int @2:8
+      VarDef y int @2:15
+    requires: Binary != @2:33 : bool
+      Var y @2:31 : int
+      Num 0 @2:36 : int
+    returns:
+      VarDef q int @2:46
+      VarDef m int @2:53
+    ensures: Binary == @2:69 : bool
+      Var x @2:67 : int
+      Binary + @2:78 : int
+        Binary * @2:74 : int
+          Var q @2:72 : int
+          Var y @2:76 : int
+        Var m @2:80 : int
+    body: Block @2:82
+      Assign q @3:5
+        value: Binary / @3:11 : int
+          Var x @3:9 : int
+          Var y @3:13 : int
+      Assign m @4:5
+        value: Binary - @4:11 : int
+          Var x @4:9 : int
+          Binary * @4:15 : int
+            Var q @4:13 : int
+            Var y @4:17 : int
+  Function swap01 @7:1
+    params:
+      VarDef a int[] @7:8
+    requires: Binary >= @7:36 : bool
+      Call length @7:26 : int
+        Var a @7:33 : int[]
+      Num 2 @7:39 : int
+    returns:
+      VarDef b int[] @7:49
+    ensures: Binary and @7:78 : bool
+      Binary == @7:70 : bool
+        Index b @7:65 : int
+          index: Num 0 @7:67 : int
+        Index a @7:73 : int
+          index: Num 1 @7:75 : int
+      Binary == @7:87 : bool
+        Index b @7:82 : int
+          index: Num 1 @7:84 : int
+        Index a @7:90 : int
+          index: Num 0 @7:92 : int
+    body: Block @7:95
+      Assign b @8:5
+        value: Var a @8:9 : int[]
+      Assign b @9:5
+        value: Update @9:5 : int[]
+          array: Var b @9:5 : int[]
+          index: Num 0 @9:7 : int
+          value: Index a @9:12 : int
+            index: Num 1 @9:14 : int
+      Assign b @10:5
+        value: Update @10:5 : int[]
+          array: Var b @10:5 : int[]
+          index: Num 1 @10:7 : int
+          value: Index a @10:12 : int
+            index: Num 0 @10:14 : int
+  Function main @13:1
+    params:
+      VarDef a int[] @13:6
+    requires: Binary > @13:34 : bool
+      Call length @13:24 : int
+        Var a @13:31 : int[]
+      Num 1 @13:36 : int
+    returns:
+      VarDef r int @13:46
+      VarDef s int[] @13:53
+    uses:
+      VarDef t int @13:66
+      VarDef c int[] @13:73
+    body: Block @13:81
+      MultiAssign t, r @14:5
+        call: Call divmod @14:12 : (int, int)
+          Binary + @14:25 : int
+            Unary - @14:19 : int
+              Index a @14:20 : int
+                index: Num 0 @14:22 : int
+            Num 7 @14:27 : int
+          Num 2 @14:30 : int
+      Assign c @15:5
+        value: Call swap01 @15:9 : int[]
+          Var a @15:16 : int[]
+      Assign s @16:5
+        value: Var c @16:9 : int[]
+      Assign s @17:5
+        value: Update @17:5 : int[]
+          array: Var s @17:5 : int[]
+          index: Binary - @17:17 : int
+            Call length @17:7 : int
+              Var s @17:14 : int[]
+            Num 1 @17:19 : int
+          value: Binary * @17:26 : int
+            Var t @17:24 : int
+            Var r @17:28 : int
+      If @18:5
+        cond: Binary or @18:22 : bool
+          Unary not @18:9 : bool
+            Binary == @18:16 : bool
+              Var t @18:14 : int
+              Var r @18:19 : int
+          Binary and @18:31 : bool
+            Binary < @18:27 : bool
+              Var t @18:25 : int
+              Num 0 @18:29 : int
+            Binary >= @18:37 : bool
+              Var r @18:35 : int
+              Num 0 @18:40 : int
+        then: Assign r @18:43
+          value: Var t @18:47 : int
+        else: Block @18:55
+      Assume @19:5
+        pred: Binary != @19:14 : bool
+          Var t @19:12 : int
+          Num 0 @19:17 : int
+      Assert @20:5
+        pred: Binary -> @20:43 : bool
+          Binary == @20:30 : bool
+            Call length @20:12 : int
+              Call swap01 @20:19 : int[]
+                Var s @20:26 : int[]
+            Call length @20:33 : int
+              Var a @20:40 : int[]
+          BoolLit true @20:46 : bool

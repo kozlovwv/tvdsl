@@ -1,0 +1,16 @@
+Program
+  Function abs @1:1
+    params:
+      VarDef x int @1:5
+    returns:
+      VarDef r int @1:20
+    body: Block @1:26
+      If @2:5
+        cond: Binary < @2:11 : bool
+          Var x @2:9 : int
+          Num 0 @2:13 : int
+        then: Assign r @2:16
+          value: Unary - @2:20 : int
+            Var x @2:21 : int
+        else: Assign r @2:29
+          value: Var x @2:33 : int

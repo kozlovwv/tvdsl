@@ -1,0 +1,7 @@
+3:5: cannot assign int[] to 'tmp': its type int was inferred at 2:5
+9:5: cannot assign int[] to 'k': its type int was inferred at 8:9
+14:9: the left side of '+' must be int, got int[] ('b' has type int[], inferred at 13:5)
+17:35: cannot infer the type of local 'never': no assignment or use gives it a type
+17:42: cannot infer the type of local 't': no assignment or use gives it a type
+17:45: cannot infer the type of local 'u': no assignment or use gives it a type
+23:9: 'two' returns 2 values and cannot be used in an expression: assign them with 'a, b = two(...);'

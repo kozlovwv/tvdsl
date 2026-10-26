@@ -1,0 +1,81 @@
+Program
+  Function minmax @1:1
+    params:
+      VarDef a int[] @1:8
+    requires: Binary > @1:36 : bool
+      Call length @1:26 : int
+        Var a @1:33 : int[]
+      Num 0 @1:38 : int
+    returns:
+      VarDef mn int @1:48
+      VarDef mx int @1:56
+    uses:
+      VarDef i int @4:5
+    body: Block @1:63
+      Assign mn @2:5
+        value: Index a @2:10 : int
+          index: Num 0 @2:12 : int
+      Assign mx @3:5
+        value: Index a @3:10 : int
+          index: Num 0 @3:12 : int
+      Assign i @4:5
+        value: Num 1 @4:9 : int
+      While @5:5
+        cond: Binary < @5:14 : bool
+          Var i @5:12 : int
+          Call length @5:16 : int
+            Var a @5:23 : int[]
+        body: Block @5:27
+          If @6:9
+            cond: Binary < @6:18 : bool
+              Index a @6:13 : int
+                index: Var i @6:15 : int
+              Var mn @6:20 : int
+            then: Assign mn @6:24
+              value: Index a @6:29 : int
+                index: Var i @6:31 : int
+          If @7:9
+            cond: Binary > @7:18 : bool
+              Index a @7:13 : int
+                index: Var i @7:15 : int
+              Var mx @7:20 : int
+            then: Assign mx @7:24
+              value: Index a @7:29 : int
+                index: Var i @7:31 : int
+          Assign i @8:9
+            value: Binary + @8:15 : int
+              Var i @8:13 : int
+              Num 1 @8:17 : int
+  Function normalize @12:1
+    params:
+      VarDef a int[] @12:11
+    requires: Binary >= @12:39 : bool
+      Call length @12:29 : int
+        Var a @12:36 : int[]
+      Num 2 @12:42 : int
+    returns:
+      VarDef b int[] @12:52
+    uses:
+      VarDef mn int @14:5
+      VarDef mx int @14:5
+    body: Block @12:60
+      Assign b @13:5
+        value: Var a @13:9 : int[]
+      MultiAssign mn, mx @14:5
+        call: Call minmax @14:14 : (int, int)
+          Var b @14:21 : int[]
+      If @15:5
+        cond: Binary != @15:12 : bool
+          Var mx @15:9 : int
+          Var mn @15:15 : int
+        then: Block @15:19
+          Assign b @15:21
+            value: Update @15:21 : int[]
+              array: Var b @15:21 : int[]
+              index: Num 0 @15:23 : int
+              value: Var mn @15:28 : int
+          Assign b @15:32
+            value: Update @15:32 : int[]
+              array: Var b @15:32 : int[]
+              index: Num 1 @15:34 : int
+              value: Var mx @15:39 : int

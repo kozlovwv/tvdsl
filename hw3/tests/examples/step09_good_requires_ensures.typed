@@ -1,0 +1,17 @@
+Program
+  Function incpos @1:1
+    params:
+      VarDef x int @1:8
+    requires: Binary >= @1:26 : bool
+      Var x @1:24 : int
+      Num 0 @1:29 : int
+    returns:
+      VarDef y int @1:39
+    ensures: Binary > @1:55 : bool
+      Var y @1:53 : int
+      Var x @1:57 : int
+    body: Block @1:59
+      Assign y @2:5
+        value: Binary + @2:11 : int
+          Var x @2:9 : int
+          Num 1 @2:13 : int
