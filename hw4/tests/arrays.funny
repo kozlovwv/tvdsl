@@ -1,0 +1,10 @@
+pair(x:int) returns a:int, b:int {
+    a = x + 1;
+    b = x * 2;
+}
+arrays(a:int[], x:int) returns b:int[], r:int {
+    b = a;
+    b[0] = x;
+    u, v = pair(length(b));
+    r = a[0] + b[0] + u + v;
+}

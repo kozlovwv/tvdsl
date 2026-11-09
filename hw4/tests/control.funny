@@ -1,0 +1,16 @@
+sum(n:int) returns r:int {
+    i = 0;
+    r = 0;
+    while (i < n) {
+        if (i / 2 * 2 == i) {
+            r = r + i;
+        } else {
+            r = r - 1;
+        }
+        i = i + 1;
+    }
+}
+fact(n:int) returns r:int {
+    if (n <= 1) r = 1;
+    else r = n * fact(n - 1);
+}

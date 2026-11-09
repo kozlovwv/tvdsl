@@ -1,0 +1,6 @@
+calc(x:int) returns r:int uses a:int, b:int, dead:int {
+    a = 2 + 3;
+    b = a * 4;
+    dead = x + 17;
+    r = b + x * 1;
+}

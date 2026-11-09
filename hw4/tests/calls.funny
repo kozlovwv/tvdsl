@@ -1,0 +1,22 @@
+// bounds(9, 2) = (2, 9). Multiple return values.
+bounds(a:int, b:int) returns low:int, high:int {
+    if (a <= b) {
+        low = a;
+        high = b;
+    } else {
+        low = b;
+        high = a;
+    }
+}
+
+// span(9, 2) = 7. Use both results of a call.
+span(a:int, b:int) returns r:int uses low:int, high:int {
+    low, high = bounds(a, b);
+    r = high - low;
+}
+
+// fibonacci(7) = 13. Two recursive calls in one expression, n >= 0.
+fibonacci(n:int) returns r:int {
+    if (n <= 1) r = n;
+    else r = fibonacci(n - 1) + fibonacci(n - 2);
+}

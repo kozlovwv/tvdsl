@@ -1,0 +1,16 @@
+// absolute(-7) = 7; absolute(0) = 0.
+absolute(x:int) returns r:int {
+    if (x < 0) r = -x;
+    else r = x;
+}
+
+// maximum(3, 8, 5) = 8. Nested branches.
+maximum(a:int, b:int, c:int) returns r:int {
+    if (a >= b) {
+        if (a >= c) r = a;
+        else r = c;
+    } else {
+        if (b >= c) r = b;
+        else r = c;
+    }
+}

@@ -1,0 +1,7 @@
+function calc(x) returns r
+  types: x: int, r: int, a: int, b: int, dead: int, %1: int, %2: int, %3: int, %4: int, %5: int
+B0:  successors=[]
+  %5 = copy x
+  %4 = + 20, %5
+  r = copy %4
+  return r

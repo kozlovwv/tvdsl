@@ -1,0 +1,14 @@
+// constants(7) = 27. Constant propagation, algebra and dead code.
+constants(x:int) returns r:int uses base:int, scale:int, dead:int {
+    base = 2 + 3;
+    scale = base * 4;
+    dead = x * 100;
+    r = scale + x * 1 + 0;
+}
+
+// overwrite(7) = 8. The old constant must be forgotten after assignment.
+overwrite(x:int) returns r:int uses a:int {
+    a = 42;
+    a = x;
+    r = a + 1;
+}
